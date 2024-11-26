@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repositorydfs.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repositosdfrydfs.
 
 ## Installation
 
