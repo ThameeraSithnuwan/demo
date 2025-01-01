@@ -12,12 +12,13 @@ export class LoggerMiddleware implements NestMiddleware {
     const traceId = customHeaders.traceId;
 
     // Log the request info using the Winston logger
-    logger.debug('request recieved', {
+    logger.debug('request received', {
       traceId,
       method,
       url,
       query,
       headers,
+      body,
     });
     next();
   }
