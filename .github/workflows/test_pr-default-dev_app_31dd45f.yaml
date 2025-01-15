@@ -394,9 +394,9 @@ jobs:
                       });
                       const responseBody = await response.text();
                       const parsedResponseBody = JSON.parse(responseBody);
-                      const [jsonString] = parsedResponseBody;
-                      const reviewObj = JSON.parse(jsonString);
-                      console.log(reviewObj);
+                      # const [jsonString] = parsedResponseBody;
+                      # const reviewObj = JSON.parse(jsonString);
+                      console.log(parsedResponseBody);
                     } catch(error){
                       console.error('Error :', error);
                       throw error;
