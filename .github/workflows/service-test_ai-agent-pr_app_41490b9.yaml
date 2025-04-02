@@ -128,13 +128,12 @@ jobs:
       issues: write
     uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
     with:
-      macro: ${{ '@openhands-agent' }}
-      base_container_image: ${{ '' }}
+      macro: '@openhands-agent'
       max_iterations: ${{ fromJson(50) }}
-      LLM_MODEL: ${{ 'anthropic/claude-3-5-sonnet-20241022' }}
-      target_branch: ${{ 'main' }}
+      LLM_MODEL: 'anthropic/claude-3-5-sonnet-20241022'
+      target_branch: 'main'
     secrets:
-      PAT_USERNAME: ${{ 'ThameeraSithnuwan' }}
+      PAT_USERNAME: 'ThameeraSithnuwan'
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
   _status-success:
