@@ -48,17 +48,16 @@ jobs:
   call-openhands-ai-agent:
     uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
     name: call-openhands-ai-agent
-    needs: []
     permissions:
       contents: write
       pull-requests: write
       issues: write
     with:
-      base_container_image: ''
-      macro: '@openhands-agent'
-      max_iterations: ${{ fromJson(3) }}
-      LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
-      target_branch: "main"
+      base_container_image: ${{ vars.OPENHANDS_BASE_CONTAINER_IMAGE || '' }}
+      macro: ${{ '@openhands-agent' }}
+      max_iterations: ${{ fromJson(vars.OPENHANDS_MAX_ITER || 50) }}
+      LLM_MODEL: ${{ 'anthropic/claude-3-5-sonnet-20241022' }}
+      target_branch: ${{ 'main' }}
     secrets:
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
