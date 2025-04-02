@@ -58,7 +58,7 @@ jobs:
       macro: '@openhands-agent'
       max_iterations: ${{ fromJson(3) }}
       LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
-      target_branch: ${{ secrets.DEMO_SKYUAIAGENTPR_TARGET_BRANCH || 'main' }}
+      target_branch: ${{ secrets.DEMO_SKYUAIAGENTPR_TARGET_BRANCH }}
     secrets:
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
