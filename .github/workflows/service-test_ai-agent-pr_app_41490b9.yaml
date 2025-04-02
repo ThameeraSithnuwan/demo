@@ -40,10 +40,6 @@ name: service-test_ai-agent-pr_app_41490b9 Pipeline (Skyu Generated)
     types: pipeline_06771b43-5fea-4f27-b41c-2a3a7ad00d14
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.DEMO_SERVICETEST_AIAGENTPR_APP_41490B9}}
-  TARGET_BRANCH_SECRET: ${{secrets.DEMO_SKYUAIAGENTPR_TARGET_BRANCH}}
-  PAT_TOKEN_SECRET: ${{secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN}}
-  PAT_USERNAM_SECRET: ${{secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM}}
-  LLM_API_KEY_SECRET: ${{secrets.DEMO_SKYUAIAGENTPR_LLM_API}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
   BRANCH_NAME: >-
     ${{github.event.client_payload.branchName || github.event.branch ||
@@ -62,8 +58,8 @@ jobs:
       macro: '@openhands-agent'
       max_iterations: ${{ fromJson(3) }}
       LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
-      target_branch: ${{env.TARGET_BRANCH_SECRET || 'main'}}
+      target_branch: ${{ secrets.DEMO_SKYUAIAGENTPR_TARGET_BRANCH || 'main' }}
     secrets:
-      PAT_TOKEN: ${{env.PAT_TOKEN_SECRET}}
-      PAT_USERNAME: ${{env.PAT_USERNAM_SECRET}}
-      LLM_API_KEY: ${{env.LLM_API_KEY_SECRET}}
+      PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
+      PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
+      LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
