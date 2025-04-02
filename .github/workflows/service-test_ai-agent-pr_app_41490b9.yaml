@@ -332,6 +332,7 @@ jobs:
     runs-on: ubuntu-latest
   call-openhands-ai-agent:
     name: call-openhands-ai-agent
+    uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
     needs:
       - decode-and-set-secrets
       - _status-pending
@@ -349,4 +350,3 @@ jobs:
       PAT_TOKEN: ${{ secrets.DEMO_UNDEFINED_PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.DEMO_UNDEFINED_PAT_USERNAM }}
       LLM_API_KEY: ${{ secrets.DEMO_UNDEFINED_LLM_API }}
-    runs-on: ubuntu-latest
