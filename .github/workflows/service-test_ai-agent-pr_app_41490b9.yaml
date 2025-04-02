@@ -1,53 +1,22 @@
-name: service-test_ai-agent-pr_app_41490b9 Pipeline (Skyu Generated)
-'on':
+name: Resolve Issue with OpenHands
+
+on:
   issues:
-    types:
-      - labeled
-    paths-ignore:
-      - .github/workflows/**
-      - .trivyignore
-      - Readme.md
-      - README.md
+    types: [labeled]
   pull_request:
-    types:
-      - labeled
+    types: [labeled]
   issue_comment:
-    types:
-      - created
-    paths-ignore:
-      - .github/workflows/**
-      - .trivyignore
-      - Readme.md
-      - README.md
+    types: [created]
   pull_request_review_comment:
-    types:
-      - created
-    paths-ignore:
-      - .github/workflows/**
-      - .trivyignore
-      - Readme.md
-      - README.md
+    types: [created]
   pull_request_review:
-    types:
-      - submitted
-    paths-ignore:
-      - .github/workflows/**
-      - .trivyignore
-      - Readme.md
-      - README.md
-  workflow_dispatch: {}
-  repository_dispatch:
-    types: pipeline_06771b43-5fea-4f27-b41c-2a3a7ad00d14
+    types: [submitted]
+
 permissions:
   contents: write
   pull-requests: write
   issues: write
-env:
-  ENCODED_PIPELINE_SECRET: ${{secrets.DEMO_SERVICETEST_AIAGENTPR_APP_41490B9}}
-  COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
-  BRANCH_NAME: >-
-    ${{github.event.client_payload.branchName || github.event.branch ||
-    github.ref_name}}
+
 jobs:
   call-openhands-resolver:
     uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
@@ -61,4 +30,4 @@ jobs:
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
       LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
-      LLM_BASE_URL: "test"
+      LLM_BASE_URL: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
