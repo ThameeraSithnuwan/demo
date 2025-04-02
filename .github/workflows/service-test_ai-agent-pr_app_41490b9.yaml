@@ -137,7 +137,6 @@ jobs:
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       PAT_USERNAME: ${{ 'ThameeraSithnuwan' }}
       LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
-    runs-on: ubuntu-latest
   _status-success:
     name: _status-success
     steps:
