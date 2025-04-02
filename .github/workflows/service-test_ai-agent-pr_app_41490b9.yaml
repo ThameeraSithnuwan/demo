@@ -1,0 +1,66 @@
+name: service-test_ai-agent-pr_app_41490b9 Pipeline (Skyu Generated)
+'on':
+  issues:
+    types:
+      - labeled
+    paths-ignore:
+      - .github/workflows/**
+      - .trivyignore
+      - Readme.md
+      - README.md
+  pull_request:
+    types:
+      - labeled
+  issue_comment:
+    types:
+      - created
+    paths-ignore:
+      - .github/workflows/**
+      - .trivyignore
+      - Readme.md
+      - README.md
+  pull_request_review_comment:
+    types:
+      - created
+    paths-ignore:
+      - .github/workflows/**
+      - .trivyignore
+      - Readme.md
+      - README.md
+  pull_request_review:
+    types:
+      - submitted
+    paths-ignore:
+      - .github/workflows/**
+      - .trivyignore
+      - Readme.md
+      - README.md
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: pipeline_06771b43-5fea-4f27-b41c-2a3a7ad00d14
+env:
+  ENCODED_PIPELINE_SECRET: ${{secrets.DEMO_SERVICETEST_AIAGENTPR_APP_41490B9}}
+  COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
+  BRANCH_NAME: >-
+    ${{github.event.client_payload.branchName || github.event.branch ||
+    github.ref_name}}
+jobs:
+  call-openhands-ai-agent:
+    name: call-openhands-ai-agent
+    needs: []
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
+    with:
+      base_container_image: ''
+      macro: '@openhands-agent'
+      max_iterations: ${{ fromJson(3) }}
+      LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
+      target_branch: ${{ secrets.DEMO_SKYUAIAGENTPR_TARGET_BRANCH || 'main' }}
+    secrets:
+      PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
+      PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
+      LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
+    runs-on: ubuntu-latest
