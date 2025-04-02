@@ -38,6 +38,10 @@ name: service-test_ai-agent-pr_app_41490b9 Pipeline (Skyu Generated)
   workflow_dispatch: {}
   repository_dispatch:
     types: pipeline_06771b43-5fea-4f27-b41c-2a3a7ad00d14
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.DEMO_SERVICETEST_AIAGENTPR_APP_41490B9}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -47,11 +51,6 @@ env:
 jobs:
   call-openhands-ai-agent:
     uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
-    name: call-openhands-ai-agent
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
     with:
       base_container_image: ${{ vars.OPENHANDS_BASE_CONTAINER_IMAGE || '' }}
       macro: ${{ '@openhands-agent' }}
