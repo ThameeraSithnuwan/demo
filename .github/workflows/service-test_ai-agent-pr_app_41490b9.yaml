@@ -46,13 +46,13 @@ env:
     github.ref_name}}
 jobs:
   call-openhands-ai-agent:
+    uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
     name: call-openhands-ai-agent
     needs: []
     permissions:
       contents: write
       pull-requests: write
       issues: write
-    uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
     with:
       base_container_image: ''
       macro: '@openhands-agent'
@@ -63,4 +63,3 @@ jobs:
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
       LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
-    runs-on: ubuntu-latest
