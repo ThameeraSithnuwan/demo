@@ -331,8 +331,8 @@ jobs:
       CONTEXT_JSON: ${{ toJson(github) }}
     runs-on: ubuntu-latest
   call-openhands-ai-agent:
-    name: call-openhands-ai-agent
     uses: All-Hands-AI/OpenHands/.github/workflows/openhands-resolver.yml@main
+    name: call-openhands-ai-agent
     needs:
       - decode-and-set-secrets
       - _status-pending
