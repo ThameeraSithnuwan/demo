@@ -61,3 +61,4 @@ jobs:
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       PAT_USERNAME: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_USERNAM }}
       LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
+      LLM_BASE_URL: "test"
