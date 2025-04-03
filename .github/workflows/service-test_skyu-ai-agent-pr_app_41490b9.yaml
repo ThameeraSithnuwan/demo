@@ -38,6 +38,10 @@ name: service-test_skyu-ai-agent-pr_app_41490b9 Pipeline (Skyu Generated)
   workflow_dispatch: {}
   repository_dispatch:
     types: pipeline_fd81bc4b-1863-4df6-8643-cd9e20cebe11
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.DEMO_SERVICETEST_SKYUAIAGENTPR_APP_41490B9}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
@@ -124,16 +128,12 @@ jobs:
     with:
       macro: '@openhands-agent'
       max_iterations: ${{ fromJson(50) }}
-      LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
-      target_branch: testbranch
+      LLM_MODEL: 'anthropic/claude-3-5-sonnet-20241022'
+      target_branch: 'main'
     secrets:
-      PAT_USERNAME: ThameeraFernando
+      PAT_USERNAME: 'ThameeraSithnuwan'
       PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
       LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
     needs:
       - _status-pending
   _status-success:
