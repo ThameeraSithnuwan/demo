@@ -266,8 +266,52 @@ jobs:
             --issue-type ${{ env.ISSUE_TYPE }} \
             --max-iterations ${{ env.MAX_ITERATIONS }} \
             --comment-id ${{ env.COMMENT_ID }} \
-            --is-experimental ${{ steps.install_openhands.outputs.isExperimental }}            
+            --is-experimental ${{ steps.install_openhands.outputs.isExperimental }}
             
+      - name: Check resolution result
+        id: check_result
+        run: |
+          if cd /tmp && grep -q '"success":true' output/output.jsonl; then
+            echo "RESOLUTION_SUCCESS=true" >> $GITHUB_OUTPUT
+          else
+            echo "RESOLUTION_SUCCESS=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Upload output.jsonl as artifact
+        uses: actions/upload-artifact@v4
+        if: always() # Upload even if the previous steps fail
+        with:
+          name: resolver-output
+          path: /tmp/output/output.jsonl
+          retention-days: 30 # Keep the artifact for 30 days
+          
+      - name: Create draft PR or push branch
+        if: always() # Create PR or branch even if the previous steps fail
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
+          GITHUB_USERNAME: ThameeraSithnuwan
+          GIT_USERNAME: ThameeraSithnuwan
+          LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
+          LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
+          LLM_BASE_URL: ""
+          LLM_API_VERSION: ""
+          PYTHONPATH: ""
+        run: |
+          if [ "${{ steps.check_result.outputs.RESOLUTION_SUCCESS }}" == "true" ]; then
+            cd /tmp && python -m openhands.resolver.send_pull_request \
+              --issue-number ${{ env.ISSUE_NUMBER }} \
+              --target-branch ${{ env.TARGET_BRANCH }} \
+              --pr-type draft \
+              --reviewer ${{ github.actor }} | tee pr_result.txt && \
+              grep "draft created" pr_result.txt | sed 's/.*\///g' > pr_number.txt
+          else
+            cd /tmp && python -m openhands.resolver.send_pull_request \
+              --issue-number ${{ env.ISSUE_NUMBER }} \
+              --pr-type branch \
+              --send-on-failure | tee branch_result.txt && \
+              grep "branch created" branch_result.txt | sed 's/.*\///g; s/.expand=1//g' > branch_name.txt
+          fi
+          
     permissions:
       contents: write
       pull-requests: write
