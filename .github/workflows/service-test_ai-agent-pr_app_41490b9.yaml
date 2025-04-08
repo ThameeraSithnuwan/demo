@@ -219,10 +219,10 @@ jobs:
 
           echo "MAX_ITERATIONS=${{ 50 }}" >> $GITHUB_ENV
           echo "SANDBOX_ENV_GITHUB_TOKEN=${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}" >> $GITHUB_ENV
-          echo "SANDBOX_ENV_BASE_CONTAINER_IMAGE=${{ "" }}" >> $GITHUB_ENV
+          echo "SANDBOX_ENV_BASE_CONTAINER_IMAGE=${{ '' }}" >> $GITHUB_ENV
 
           # Set branch variables
-          echo "TARGET_BRANCH=${{ 'main' }}" >> $GITHUB_ENV       
+          echo "TARGET_BRANCH=main" >> $GITHUB_ENV       
           
     permissions:
       contents: write
