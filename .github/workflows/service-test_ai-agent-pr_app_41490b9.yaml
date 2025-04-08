@@ -251,13 +251,13 @@ jobs:
             
       - name: Attempt to resolve issue
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || github.token }}
-          GITHUB_USERNAME: ${{ secrets.PAT_USERNAME || 'openhands-agent' }}
-          GIT_USERNAME: ${{ secrets.PAT_USERNAME || 'openhands-agent' }}
-          LLM_MODEL: ${{ secrets.LLM_MODEL || inputs.LLM_MODEL }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
-          LLM_API_VERSION: ${{ inputs.LLM_API_VERSION }}
+          GITHUB_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
+          GITHUB_USERNAME: ThameeraSithnuwan
+          GIT_USERNAME: ThameeraSithnuwan
+          LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
+          LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }
+          LLM_BASE_URL: ""
+          LLM_API_VERSION: ""
           PYTHONPATH: ""
         run: |
           cd /tmp && python -m openhands.resolver.resolve_issue \
