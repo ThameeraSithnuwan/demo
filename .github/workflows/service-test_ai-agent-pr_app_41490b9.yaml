@@ -222,7 +222,20 @@ jobs:
           echo "SANDBOX_ENV_BASE_CONTAINER_IMAGE=${{ '' }}" >> $GITHUB_ENV
 
           # Set branch variables
-          echo "TARGET_BRANCH=main" >> $GITHUB_ENV       
+          echo "TARGET_BRANCH=main" >> $GITHUB_ENV      
+          
+      - name: Comment on issue with start message
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
+          script: |
+            const issueType = process.env.ISSUE_TYPE;
+            github.rest.issues.createComment({
+              issue_number: ${{ env.ISSUE_NUMBER }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `[OpenHands](https://github.com/All-Hands-AI/OpenHands) started fixing the ${issueType}! You can monitor the progress [here](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
+            });
           
     permissions:
       contents: write
