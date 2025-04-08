@@ -156,8 +156,39 @@ jobs:
           path: ${{ env.pythonLocation }}/lib/python3.12/site-packages/*
           key: ${{ runner.os }}-pip-openhands-resolver-${{ hashFiles('/tmp/requirements.txt') }}
           restore-keys: |
-            ${{ runner.os }}-pip-openhands-resolver-${{ hashFiles('/tmp/requirements.txt') }}          
+            ${{ runner.os }}-pip-openhands-resolver-${{ hashFiles('/tmp/requirements.txt') }}  
             
+      - name: Check required environment variables
+        env:
+          LLM_MODEL: 'anthropic/claude-3-5-sonnet-20241022'
+          LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
+          LLM_BASE_URL: ''
+          LLM_API_VERSION: ''
+          PAT_TOKEN: ${{ secrets.DEMO_SKYUAIAGENTPR_PAT_TOKEN }}
+          PAT_USERNAME: 'ThameeraSithnuwan'
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          required_vars=("LLM_API_KEY")
+          for var in "${required_vars[@]}"; do
+            if [ -z "${!var}" ]; then
+              echo "Error: Required environment variable $var is not set."
+              exit 1
+            fi
+          done
+
+          # Check optional variables and warn about fallbacks
+          if [ -z "$LLM_BASE_URL" ]; then
+            echo "Warning: LLM_BASE_URL is not set, will use default API endpoint"
+          fi
+
+          if [ -z "$PAT_TOKEN" ]; then
+            echo "Warning: PAT_TOKEN is not set, falling back to GITHUB_TOKEN"
+          fi
+
+          if [ -z "$PAT_USERNAME" ]; then
+            echo "Warning: PAT_USERNAME is not set, will use openhands-agent"
+          fi            
+          
     permissions:
       contents: write
       pull-requests: write
