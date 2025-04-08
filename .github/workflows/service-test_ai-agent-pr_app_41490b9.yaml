@@ -255,7 +255,7 @@ jobs:
           GITHUB_USERNAME: ThameeraSithnuwan
           GIT_USERNAME: ThameeraSithnuwan
           LLM_MODEL: anthropic/claude-3-5-sonnet-20241022
-          LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }
+          LLM_API_KEY: ${{ secrets.DEMO_SKYUAIAGENTPR_LLM_API }}
           LLM_BASE_URL: ""
           LLM_API_VERSION: ""
           PYTHONPATH: ""
