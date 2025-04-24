@@ -837,6 +837,7 @@ jobs:
             
     needs:
       - trigger-helm-pipelines
+      - _status_testing
     permissions: write-all
     if: >-
       needs.build-and-push.outputs.stepsCanProceed == 'true' &&
