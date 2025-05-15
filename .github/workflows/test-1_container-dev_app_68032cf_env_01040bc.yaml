@@ -147,7 +147,8 @@ jobs:
                   fi
                   trivyVulnFound=${{ env.IS_TRIVY_VULNERABILITIES_DETECTED }}
                   if [ -n "$trivyVulnFound" ]; then
-                    echo "Trivy vulnerabilities were detected. Failing the job."
+                    echo "Trivy vulnerabilities were detected."
+                    echo "The job failed after uploading the code scan reports."
                     exit 1
                   fi
                   
