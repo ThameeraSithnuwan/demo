@@ -145,7 +145,7 @@ jobs:
                   else
                       echo ".trivyignore file not found"
                   fi
-                  trivyVulnFound = ${{ env.IS_TRIVY_VULNERABILITIES_DETECTED }}
+                  trivyVulnFound=${{ env.IS_TRIVY_VULNERABILITIES_DETECTED }}
                   if [ -n "$trivyVulnFound" ]; then
                     echo "Trivy vulnerabilities were detected. Failing the job."
                     exit 1
