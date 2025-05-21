@@ -1,43 +1,57 @@
-# Use a single base image for both build and test
+# Use Node.js 18 Alpine as the base image for a smaller footprint and faster builds
+# This is the build stage where we compile and prepare our application
 FROM node:18-alpine AS build
 
-# Create app directory
+# Set the working directory for all subsequent commands
+# Using /usr/src/app is a common convention for Node.js applications
 WORKDIR /usr/src/app
 
-# Copy application dependency manifests to the container image.
+# Copy package.json and package-lock.json (if available) to leverage Docker cache
+# The --chown flag ensures proper file ownership in the container
 COPY --chown=node:node package*.json ./
 
-# Install app dependencies using the `npm ci` command for development
+# Install dependencies using npm ci for consistent and reliable builds
+# npm ci is preferred in CI/CD environments as it's more strict than npm install
 RUN npm ci
 
-# Copy app source
+# Copy the entire application source code into the container
+# The --chown flag ensures all files are owned by the node user for security
 COPY --chown=node:node . .
 
-# Build the application
+# Build the application using the build script defined in package.json
+# This typically involves transpilation, bundling, and optimization
 RUN npm run build
 
-# Set NODE_ENV environment variable
+# Set NODE_ENV to production to enable optimizations
+# This affects how some dependencies behave and can improve performance
 ENV NODE_ENV production
 
-# Running `npm ci` removes the existing node_modules directory and passing in --only=production ensures that only the production dependencies are installed. This ensures that the node_modules directory is as optimized as possible
+# Reinstall dependencies with --only=production to remove devDependencies
+# This significantly reduces the final image size by removing unnecessary packages
+# Also clean npm cache to further reduce image size
 RUN npm ci --only=production && npm cache clean --force
 
-# Set the user to node
+# Switch to non-root user for security best practices
+# This reduces the attack surface if the container is compromised
 USER node
 
 ###################
-# PRODUCTION
+# PRODUCTION STAGE
 ###################
 
-# Use the built app image as the base for the production image
+# Start a new build stage for the production image
+# This creates a minimal image without build tools and source code
 FROM node:18-alpine AS production
 
-# Create app directory
+# Set up the working directory in the production image
 WORKDIR /usr/src/app
 
-# Copy the bundled code and production dependencies from the build stage to the production image
+# Copy only the necessary files from the build stage
+# This includes the production node_modules and compiled application code
+# Using --chown ensures proper file permissions in the production environment
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
-# Start the server using the production build
+# Define the command to start the application
+# Using array syntax for better handling of arguments and spaces
 CMD [ "node", "dist/main.js" ]
