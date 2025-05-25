@@ -457,29 +457,29 @@ jobs:
                 fi
                 echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
                 
-      - name: 'Run :: Login to Dockerhub'
-        run: >-
-          echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{
-          env.DOCKER_USERNAME }}" --password-stdin docker.io
-      - name: 'Run :: Check if image already exists'
-        id: check-image-existence-step-id
-        run: |2-
+      # - name: 'Run :: Login to Dockerhub'
+      #   run: >-
+      #     echo "${{ env.DOCKER_PASSWORD }}" | docker login -u "${{
+      #     env.DOCKER_USERNAME }}" --password-stdin docker.io
+      # - name: 'Run :: Check if image already exists'
+      #   id: check-image-existence-step-id
+      #   run: |2-
 
-              if docker pull ${{ env.IMAGE_NAME }}:${{env.COMMIT_ID}} >/dev/null 2>&1; 
-              then
-                echo "Image exists in registry."
-                echo "STEPS_CAN_PROCEED=false" >> $GITHUB_ENV
-              else
-                echo "Image does not exist in registry."
-                echo "STEPS_CAN_PROCEED=true" >> $GITHUB_ENV
-              fi
+      #         if docker pull ${{ env.IMAGE_NAME }}:${{env.COMMIT_ID}} >/dev/null 2>&1; 
+      #         then
+      #           echo "Image exists in registry."
+      #           echo "STEPS_CAN_PROCEED=false" >> $GITHUB_ENV
+      #         else
+      #           echo "Image does not exist in registry."
+      #           echo "STEPS_CAN_PROCEED=true" >> $GITHUB_ENV
+      #         fi
               
-      - name: 'Run :: Build With Docker'
-        run: >-
-          docker build -t ${{ env.IMAGE_NAME }}:${{ env.COMMIT_ID }} -f
-          ${{env.DOCKER_FILE_PATH}} --build-arg BUILT_WITH=SKYU${{
-          env.DOCKER_BUILD_ARGS }} ${{env.DOCKER_BUILD_CONTEXT}}
-        if: ${{ env.STEPS_CAN_PROCEED == 'true' }}
+      # - name: 'Run :: Build With Docker'
+      #   run: >-
+      #     docker build -t ${{ env.IMAGE_NAME }}:${{ env.COMMIT_ID }} -f
+      #     ${{env.DOCKER_FILE_PATH}} --build-arg BUILT_WITH=SKYU${{
+      #     env.DOCKER_BUILD_ARGS }} ${{env.DOCKER_BUILD_CONTEXT}}
+      #   if: ${{ env.STEPS_CAN_PROCEED == 'true' }}
       - name: 'Run :: Trivy vulnerability scanner'
         uses: aquasecurity/trivy-action@master
         with:
