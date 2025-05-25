@@ -488,7 +488,7 @@ jobs:
           output: ${{ env.COMMIT_ID }}-image-vulnerability-report.json
           exit-code: ${{env.TRIVY_SCAN_EXIT_CODE}}
           vuln-type: os,library
-          severity: "NONE"
+          severity: ${{env.SCAN_SEVERITY}}
           hide-progress: true
         if: ${{ env.STEPS_CAN_PROCEED == 'true' }}
       - name: 'Run :: Evaluate Trivy Results'
@@ -499,7 +499,7 @@ jobs:
               trivy_result=$(cat "${{ env.COMMIT_ID }}-image-vulnerability-report.min.json")
 
               # Set the desired severity level
-              desiredSeverity="NONE"
+              desiredSeverity="${{ env.SCAN_SEVERITY }}"
               IFS=',' read -ra severities <<< "$desiredSeverity"  # Split the severity string
 
               # Print the tags array for debugging
