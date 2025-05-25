@@ -500,6 +500,7 @@ jobs:
 
               # Set the desired severity level
               desiredSeverity="${{ env.SCAN_SEVERITY }}"
+              echo desiredSeverity
               IFS=',' read -ra severities <<< "$desiredSeverity"  # Split the severity string
 
               # Print the tags array for debugging
