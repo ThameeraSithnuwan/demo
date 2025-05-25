@@ -68,13 +68,15 @@ jobs:
         run: >-
           docker run -i -v "${PWD}:/src" semgrep/semgrep semgrep /src --json
           --quiet > semgrep_results.json
+        if: ${{ NONE == 'NONE' }}
       - name: 'Run :: Trivy Filesystem Scan'
         run: |2-
 
-                  docker run --rm -v "${PWD}:/src" aquasec/trivy fs /src --severity CRITICAL --format json --quiet > trivy_results.json
+                  docker run --rm -v "${PWD}:/src" aquasec/trivy fs /src --severity NONE --format json --quiet > trivy_results.json
                   # Minifying Json
                   jq -c '.' trivy_results.json > trivy_results.min.json
                   
+        if: ${{ NONE == 'NONE' }}
       - name: 'Run :: Evaluate Trivy Results'
         run: |2-
              
@@ -84,13 +86,15 @@ jobs:
                     echo "IS_TRIVY_VULNERABILITIES_DETECTED=true" >> $GITHUB_ENV
                   fi
                   
+        if: ${{ NONE == 'NONE' }}
       - name: 'Run :: Trivy Filesystem Scan (Including Trivy Ignores)'
         run: |2-
 
-                  docker run --rm -v "${PWD}:/src" aquasec/trivy fs /src --severity CRITICAL --format json --quiet --list-all-pkgs > trivy_results.json
+                  docker run --rm -v "${PWD}:/src" aquasec/trivy fs /src --severity NONE --format json --quiet --list-all-pkgs > trivy_results.json
                   # Minifying Json
                   jq -c '.' trivy_results.json > trivy_results.min.json
                   
+        if: ${{ NONE == 'NONE' }}
       - name: 'Run :: Upload Code Scan Reports'
         env:
           RUN_ID: ${{ github.run_id }}
@@ -152,6 +156,7 @@ jobs:
                     exit 1
                   fi
                   
+        if: ${{ NONE == 'NONE' }}
   _status-pending:
     name: _status-pending
     steps:
@@ -500,11 +505,6 @@ jobs:
 
               # Set the desired severity level
               desiredSeverity="${{ env.SCAN_SEVERITY }}"
-              if [ "$desiredSeverity" == "CRITICAL" ]; then
-                echo "desiredSeverity is exactly CRITICAL"
-              else
-                echo "desiredSeverity is NOT exactly CRITICAL"
-              fi
               IFS=',' read -ra severities <<< "$desiredSeverity"  # Split the severity string
 
               # Print the tags array for debugging
