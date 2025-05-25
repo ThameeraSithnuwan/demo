@@ -501,7 +501,11 @@ jobs:
               # Set the desired severity level
               desiredSeverity="${{ env.SCAN_SEVERITY }}"
               echo "#########################################"
-              echo "$desiredSeverity"
+              if [ "$desiredSeverity" == "CRITICAL" ]; then
+                echo "desiredSeverity is exactly CRITICAL"
+              else
+                echo "desiredSeverity is NOT exactly CRITICAL"
+              fi
               echo "#########################################"
               IFS=',' read -ra severities <<< "$desiredSeverity"  # Split the severity string
 
