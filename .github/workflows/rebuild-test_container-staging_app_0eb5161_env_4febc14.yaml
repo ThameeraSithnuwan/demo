@@ -362,8 +362,8 @@ jobs:
                 echo "Project Release Information"
                 echo "////////////////////////////"
                 echo "Project Release Tag  : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.releaseTag')"
-                echo "Previous Commit ID   : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.preCommitId')"
-                echo "New Commit ID        : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.newCommitId')"
+                echo "Previous Commit ID   : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.commitData.preCommitId')"
+                echo "New Commit ID        : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.commitData.newCommitId')"
                 echo "From                 : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.envFrom')"
                 echo "To                   : $(echo "$PROJECT_RELEASE_DATA" | jq -r '.envTo')"
               fi
