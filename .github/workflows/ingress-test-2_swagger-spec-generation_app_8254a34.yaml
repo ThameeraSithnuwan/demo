@@ -146,7 +146,9 @@ jobs:
                 chmod +x git-diffn.sh
                 sudo mv git-diffn.sh /usr/local/bin/git-diffn
                 git diffn origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} > diff_output.txt
-                echo diff_output.txt        
+                git diff origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} > diff_output2.txt
+                cat diff_output.txt
+                cat diff_output2.txt
             
       - name: 'Run :: Generate Swagger Spec From Ai Service'
         run: |2-
