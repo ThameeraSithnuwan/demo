@@ -2,11 +2,11 @@ name: >-
   ingress-test-2_skyu-swagger-spec-generation_app_8254a34 Pipeline (Skyu
   Generated)
 'on':
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - closed
+    tags:
+      - v*
     paths-ignore:
       - .github/workflows/**
       - .trivyignore
@@ -152,9 +152,8 @@ jobs:
                 curl -LO https://raw.githubusercontent.com/ElectricRCAircraftGuy/eRCaGuy_dotfiles/master/useful_scripts/git-diffn.sh
                 chmod +x git-diffn.sh
                 sudo mv git-diffn.sh /usr/local/bin/git-diffn
-                          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
-                    echo "Feature branch (head): ${{ github.event.pull_request.head.ref }}"
-                git diffn origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} > diff_output.txt        
+                git diffn origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} > diff_output.txt
+                cat diff_output.txt        
             
       - name: 'Run :: Generate Swagger Spec From Ai Service'
         run: |2-
