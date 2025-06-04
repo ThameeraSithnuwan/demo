@@ -2,11 +2,11 @@ name: >-
   ingress-test-2_skyu-swagger-spec-generation_app_8254a34 Pipeline (Skyu
   Generated)
 'on':
-  push:
+  pull_request:
     branches:
       - main
-    tags:
-      - v*
+    types:
+      - closed
     paths-ignore:
       - .github/workflows/**
       - .trivyignore
