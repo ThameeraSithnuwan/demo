@@ -1,7 +1,7 @@
 # Use the official Node.js LTS image test
 FROM node:18
 
-# Create app directory
+# Create app directory test
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json (if available)
