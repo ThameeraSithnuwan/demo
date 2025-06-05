@@ -149,10 +149,10 @@ jobs:
                 sudo mv git-diffn.sh /usr/local/bin/git-diffn
 
                 if [ $(git cat-file -p ${{ github.sha }} | grep "^parent" | wc -l) -eq 2 ]; then
-                  echo "Merged commit detected"
+                  echo "Detected a merged commit"
                   git diffn ${{ github.sha }}^1 ${{ github.sha }} > diff_output.txt
                 else
-                  echo "Squash/linear commit detected"
+                  echo "Detected a squash or linear commit"
                   git diffn ${{ github.sha }}^ ${{ github.sha }} > diff_output.txt
                 fi
             
