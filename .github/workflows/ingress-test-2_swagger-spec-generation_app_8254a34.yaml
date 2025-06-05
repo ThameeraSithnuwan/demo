@@ -150,8 +150,7 @@ jobs:
                   git diffn ${{ github.sha }}^1 ${{ github.sha }} > diff_output.txt
                 else
                   echo "Squash/linear commit detected"
-                  git fetch origin ${{ github.base_ref }} --depth=1
-                  git diffn origin/${{ github.base_ref }} ${{ github.sha }} > diff_output.txt
+                  gitn diff ${{ github.sha }}^ ${{ github.sha }} > diff_output.txt
                 fi
                 cat diff_output.txt
             
