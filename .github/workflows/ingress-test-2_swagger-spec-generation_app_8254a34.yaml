@@ -145,7 +145,14 @@ jobs:
                 curl -LO https://raw.githubusercontent.com/ElectricRCAircraftGuy/eRCaGuy_dotfiles/master/useful_scripts/git-diffn.sh
                 chmod +x git-diffn.sh
                 sudo mv git-diffn.sh /usr/local/bin/git-diffn
-                git diffn ${{ github.sha }}^1 ${{ github.sha }} > diff_output.txt
+                if [ $(git cat-file -p ${{ github.sha }} | grep "^parent" | wc -l) -eq 2 ]; then
+                  echo "Merged commit detected"
+                  git diffn ${{ github.sha }}^1 ${{ github.sha }} > diff_output.txt
+                else
+                  echo "Squash/linear commit detected"
+                  git fetch origin ${{ github.base_ref }} --depth=1
+                  git diff origin/${{ github.base_ref }} ${{ github.sha }} > diff_output.txt
+                fi
                 cat diff_output.txt
             
       - name: 'Run :: Generate Swagger Spec From Ai Service'
