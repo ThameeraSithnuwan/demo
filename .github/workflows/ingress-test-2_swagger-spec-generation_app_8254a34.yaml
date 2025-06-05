@@ -156,6 +156,11 @@ jobs:
                   echo "Detected a squash or linear commit"
                   git diffn ${{ github.sha }}^ ${{ github.sha }} > diff_output.txt
                 fi
+                echo"##############################################"
+                cat diff_output.txt
+                echo"##############################################"
+                ls
+                echo"##############################################"
             
       - name: 'Run :: Generate Swagger Spec From Ai Service'
         run: |2-
