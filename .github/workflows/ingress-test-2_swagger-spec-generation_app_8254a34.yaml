@@ -178,20 +178,20 @@ jobs:
                 fi
               
       - name: 'Run :: Commit New Swagger Spec'
-        if: env.commit_status == "success"
+        if: env.commit_status == 'success'
         run: |2-
 
                 git push origin new-swagger-spec-${{ github.run_id }}
               
       - name: 'Run :: Get Default Branch'
-        if: env.commit_status == "success"
+        if: env.commit_status == 'success'
         run: |2-
 
                 DEFAULT_BRANCH=$(git remote show origin | grep "HEAD branch" | cut -d ' ' -f 5)
                 echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
               
       - name: 'Run :: Add Generated Swagger Spec Pr To Github'
-        if: env.commit_status == "success"
+        if: env.commit_status == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |2-
