@@ -143,7 +143,7 @@ jobs:
                 echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
                 
       - name: 'Run :: Get Branch Diff For Github Repo'
-        if: ${{ github.event.client_payload.isRegenerateSwaggerSpec != "true" }}
+        if: ${{ github.event.client_payload.isRegenerateSwaggerSpec != true }}
         run: |2-
 
                 curl -LO https://raw.githubusercontent.com/ElectricRCAircraftGuy/eRCaGuy_dotfiles/master/useful_scripts/git-diffn.sh
