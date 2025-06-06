@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-// Middleware to parse JSON requests test
+// Middleware to parse JSON
 //sample comment
 app.use(express.json());
 
