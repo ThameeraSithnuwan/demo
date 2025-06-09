@@ -8,6 +8,7 @@ name: ingress-test-2_swagger-spec-generation_app_8254a34 Pipeline (Skyu Generate
       - .trivyignore
       - Readme.md
       - README.md
+      - 'diff*.txt'
   workflow_dispatch: {}
   repository_dispatch:
     types: pipeline_0da3ea08-47e6-46f8-ab54-51974c35e583
