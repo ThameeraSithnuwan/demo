@@ -172,7 +172,7 @@ jobs:
                 git config --global user.email "actions@gmail.com"
                 git config --global user.name "GitHub Actions"
                 git add .
-                if git commit -m "Updated the swagger spec yaml"; then
+                if git commit -m "Updated the swagger spec yaml [ci skip]"; then
                   echo "commit_status=success" >> $GITHUB_ENV
                 else
                   echo "commit_status=skip" >> $GITHUB_ENV
@@ -197,7 +197,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |2-
 
-                gh pr create --base "${{ env.DEFAULT_BRANCH }}" --head "new-swagger-spec-${{ github.run_id }}"         --title "New Swagger Spec ${{ github.run_id }}"         --body "Updated swagger spec yaml"
+                gh pr create --base "${{ env.DEFAULT_BRANCH }}" --head "new-swagger-spec-${{ github.run_id }}"         --title "New Swagger Spec ${{ github.run_id }} [ci skip]"         --body "Updated swagger spec yaml"
             
     needs:
       - _status-pending
