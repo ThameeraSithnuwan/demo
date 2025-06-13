@@ -410,7 +410,7 @@ jobs:
   build-and-push:
     name: build-and-push
     env:
-      SERVICE_NAME: test-ecs
+      SERVICE_NAME: "test-ecs"
       CONTAINER_NAME: "test-ecs-container"
       IMAGE_URI: "nginx:latest"
       SUBNET_IDS: "subnet-0770a7931dc460a8a,subnet-0689d9a9bee3f5fed"
