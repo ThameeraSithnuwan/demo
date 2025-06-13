@@ -411,8 +411,8 @@ jobs:
     name: build-and-push
     env:
 
-      SERVICE_NAME: "test-ecs"
-      CONTAINER_NAME: "test-ecs-container"
+      SERVICE_NAME: "test-ecs-new"
+      CONTAINER_NAME: "test-ecs-container-new"
       IMAGE_URI: "nginx:latest"
       SUBNET_IDS: subnet-0770a7931dc460a8a,subnet-0689d9a9bee3f5fed
       PUBLIC_IP: "ENABLED"
