@@ -409,6 +409,15 @@ jobs:
     runs-on: ubuntu-latest
   build-and-push:
     name: build-and-push
+    env:
+      SERVICE_NAME: test-ecs
+      CONTAINER_NAME: "test-ecs-container"
+      IMAGE_URI: "nginx:latest"
+      SUBNET_IDS: "subnet-0770a7931dc460a8a,subnet-0689d9a9bee3f5fed"
+      PUBLIC_IP: "ENABLED"
+      CPU: "256"
+      MEMORY: "512"
+    
     steps:
       - name: 'Run :: Start'
         run: |2-
@@ -494,41 +503,62 @@ jobs:
       - name: 'Run :: Build, tag, and push image'
         run: docker push ${{ env.IMAGE_NAME }}:${{ env.COMMIT_ID }}
         if: ${{ env.STEPS_CAN_PROCEED == 'true' }}
-      - name: 'Run :: Fetch Task Definition'
-        id: fetch-task-def
-        run: >-
-          task_definition_json=$(aws ecs describe-task-definition
-          --task-definition ${{ env.TASK_DEFINITION_ARN }} --query
-          'taskDefinition' --output json)
-                # Save the JSON details to a file
-                echo "$task_definition_json" > task-definition.json
-                
-                # Remove specific fields using jq
-                echo "$task_definition_json" | jq 'del(
-                  .taskDefinitionArn,
-                  .requiresAttributes,
-                  .compatibilities,
-                  .revision,
-                  .status,
-                  .registeredAt,
-                  .registeredBy
-                )' > task-definition.json
-      - name: 'Run :: Fill in the new image ID in the Amazon ECS task definition'
-        id: task-def
-        uses: >-
-          aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
-        with:
-          task-definition: task-definition.json
-          container-name: ${{ env.ECS_CONTAINER_NAME }}
-          image: ${{ env.IMAGE_NAME }}:${{ env.COMMIT_ID }}
-      - name: 'Run :: Deploy Amazon ECS task definition'
-        uses: >-
-          aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+
+      - name: Generate ECS task definition
+        run: |
+          cat > task-def.json <<EOF
+          {
+            "family": "${{ env.SERVICE_NAME }}-family",
+            "networkMode": "awsvpc",
+            "requiresCompatibilities": ["FARGATE"],
+            "cpu": "${{ env.CPU }}",
+            "memory": "${{ env.MEMORY }}",
+            "containerDefinitions": [
+              {
+                "name": "${{ env.CONTAINER_NAME }}",
+                "image": "${{ env.IMAGE_URI }}",
+                "essential": true,
+                "portMappings": [
+                  {
+                    "containerPort": ${{ env.CONTAINER_PORT }},
+                    "protocol": "tcp"
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+
+      - name: Register ECS task definition
+        id: register-task-def
+        run: |
+          TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://task-def.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          echo "TASK_DEF_ARN=$TASK_DEF_ARN" >> $GITHUB_ENV
+
+      - name: Create or update ECS service
+        run: |
+          SERVICE_EXISTS=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.SERVICE_NAME }} \
+            --query 'services[0].status' --output text)
+          if [ "$SERVICE_EXISTS" = "ACTIVE" ]; then
+            aws ecs update-service \
+              --cluster ${{ env.ECS_CLUSTER }} \
+              --service ${{ env.SERVICE_NAME }} \
+              --task-definition $TASK_DEF_ARN
+          else
+            aws ecs create-service \
+              --cluster ${{ env.ECS_CLUSTER }} \
+              --service-name ${{ env.SERVICE_NAME }} \
+              --task-definition $TASK_DEF_ARN \
+              --desired-count 1 \
+              --launch-type FARGATE \
+              --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],assignPublicIp=${{ env.PUBLIC_IP }}}"
+          fi
+
     needs:
       - _status_testing
     permissions: write-all
