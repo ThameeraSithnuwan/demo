@@ -410,6 +410,7 @@ jobs:
   build-and-push:
     name: build-and-push
     env:
+
       SERVICE_NAME: "test-ecs"
       CONTAINER_NAME: "test-ecs-container"
       IMAGE_URI: "nginx:latest"
@@ -418,6 +419,8 @@ jobs:
       CPU: "256"
       MEMORY: "512"
       CONTAINER_PORT: 80
+      DESIRED_COUNT: 1
+      ECS_CLUSTER: "ecs-test"
     
     steps:
       - name: 'Run :: Start'
@@ -555,7 +558,7 @@ jobs:
               --cluster ${{ env.ECS_CLUSTER }} \
               --service-name ${{ env.SERVICE_NAME }} \
               --task-definition $TASK_DEF_ARN \
-              --desired-count 1 \
+              --desired-count ${{ env.DESIRED_COUNT }} \
               --launch-type FARGATE \
               --network-configuration "awsvpcConfiguration={subnets=[${{ env.SUBNET_IDS }}],assignPublicIp=${{ env.PUBLIC_IP }}}"
           fi
