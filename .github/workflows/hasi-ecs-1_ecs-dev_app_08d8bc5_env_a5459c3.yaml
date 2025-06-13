@@ -520,7 +520,7 @@ jobs:
             "containerDefinitions": [
               {
                 "name": "${{ env.CONTAINER_NAME }}",
-                "image": "${{ env.IMAGE_URI }}",
+                "image": "${{ env.IMAGE_NAME }}:${{ env.COMMIT_ID }}",
                 "essential": true,
                 "portMappings": [
                   {
