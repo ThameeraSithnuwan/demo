@@ -413,7 +413,7 @@ jobs:
       SERVICE_NAME: "test-ecs"
       CONTAINER_NAME: "test-ecs-container"
       IMAGE_URI: "nginx:latest"
-      SUBNET_IDS: "subnet-0770a7931dc460a8a,subnet-0689d9a9bee3f5fed"
+      SUBNET_IDS: subnet-0770a7931dc460a8a,subnet-0689d9a9bee3f5fed
       PUBLIC_IP: "ENABLED"
       CPU: "256"
       MEMORY: "512"
