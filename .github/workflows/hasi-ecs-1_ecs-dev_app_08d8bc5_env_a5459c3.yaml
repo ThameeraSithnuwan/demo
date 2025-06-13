@@ -517,6 +517,7 @@ jobs:
             "requiresCompatibilities": ["FARGATE"],
             "cpu": "${{ env.CPU }}",
             "memory": "${{ env.MEMORY }}",
+            "executionRoleArn": "${{ env.roleARN }}",
             "containerDefinitions": [
               {
                 "name": "${{ env.CONTAINER_NAME }}",
