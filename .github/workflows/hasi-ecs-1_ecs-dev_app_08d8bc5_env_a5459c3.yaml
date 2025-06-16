@@ -411,7 +411,7 @@ jobs:
     name: build-and-push
     env:
 
-      SERVICE_NAME: "test-ecs-new"
+      SERVICE_NAME: "hasi-ecs-1_ecs-dev_app_08d8bc5_env_a5459c3"
       CONTAINER_NAME: "test-ecs-container-new"
       IMAGE_URI: "nginx:latest"
       SUBNET_IDS: subnet-0770a7931dc460a8a,subnet-0689d9a9bee3f5fed
