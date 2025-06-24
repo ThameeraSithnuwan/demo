@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = 52970;
+
+// Enable CORS for all routes
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 // Middleware to parse JSONsdfsdfs
 // Middleware to parse JSONsdfsdfs
@@ -10,6 +18,12 @@ app.use(express.json());
 // Example route
 app.get('/', (req, res) => {
   res.send('Hello, world!');
+});
+
+// New page route
+app.get('/about', (req, res) => {
+  res.send('Welcome to the About page!');
+});
 
 // Start server
 app.listen(PORT, () => {
