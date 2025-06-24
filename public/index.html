@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .welcome-form {
+            margin-top: 50px;
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #welcome-message {
+            margin-top: 30px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome Dashboard</h1>
+    <div class="welcome-form">
+        <input type="text" id="name" placeholder="Enter your name">
+        <button onclick="updateWelcome()">Submit</button>
+    </div>
+    <div id="welcome-message"></div>
+
+    <script>
+        function updateWelcome() {
+            const name = document.getElementById('name').value;
+            if (name.trim()) {
+                fetch('/welcome', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: name })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('welcome-message').textContent = data.message;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
