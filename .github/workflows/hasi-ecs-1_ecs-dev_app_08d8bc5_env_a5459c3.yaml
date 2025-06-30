@@ -17,8 +17,7 @@ env:
   BRANCH_NAME: >-
     ${{github.event.client_payload.branchName || github.event.branch ||
     github.ref_name}}
-  test: test
-  testtest: testtest
+  HI: hi
   DEPLOY_STEP_SHOULD_DEPLOY: 'false'
 jobs:
   code-scan:
