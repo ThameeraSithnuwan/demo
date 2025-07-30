@@ -3,7 +3,6 @@ const app = express();
 const PORT = 3000;
 
 // Middleware to parse JSONsdfsdfs
-// Middleware to parse JSONsdfsdfs
 //sample comment
 app.use(express.json());
 
