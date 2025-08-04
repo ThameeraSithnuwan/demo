@@ -9,7 +9,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello, world!');
 
-// Start server
+// Start node server 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
