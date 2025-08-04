@@ -662,7 +662,7 @@ jobs:
               fi
             
     needs:
-      - code-scan
+      - custom-job
       - _status_testing
     permissions: write-all
     if: github.event.client_payload.releaseData == null
