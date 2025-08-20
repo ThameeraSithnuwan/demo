@@ -6,7 +6,7 @@ name: sh-jobs_pr-default_app_d4e670b Pipeline (Skyu Generated)
       - synchronize
   workflow_dispatch: {}
   repository_dispatch:
-    types: pipeline_d2c0bed1-0057-422f-8823-d46ec81ddce2
+    types: pipeline_9c3c0b40-c487-442b-8824-afe3fa6c6ec8
 env:
   ENCODED_PIPELINE_SECRET: ${{secrets.DEMO_SHJOBS_PRDEFAULT_APP_D4E670B}}
   COMMIT_ID: ${{github.event.client_payload.commitId || github.sha || github.run_id}}
