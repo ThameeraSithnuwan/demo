@@ -92,7 +92,7 @@ jobs:
   deploy:
     name: Deploy
     env:
-      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id || github.run_id }}
+      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id }}
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
