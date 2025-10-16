@@ -18,6 +18,8 @@ on:
   push:
       branches: 
         - main
+env:
+  COMMIT_ID: test
 jobs:
   build-and-push:
     name: Build and Push
