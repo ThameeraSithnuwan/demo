@@ -96,7 +96,7 @@ jobs:
     steps:
     - name: Debug Received Outputs
       run: |
-        echo "=== Deploy Job Debug Info === $COMMIT_ID"
+        echo $COMMIT_ID
         echo "Received from build-and-push:"
         echo "  commit_id: ${{ needs.build-and-push.outputs.commit_id }}"
         echo "  steps_can_proceed: ${{ needs.build-and-push.outputs.steps_can_proceed }}"
