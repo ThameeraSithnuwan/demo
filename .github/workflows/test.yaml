@@ -91,11 +91,12 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs: build-and-push
-    
+    env:
+      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id }}
     steps:
     - name: Debug Received Outputs
       run: |
-        echo "=== Deploy Job Debug Info ==="
+        echo "=== Deploy Job Debug Info === $COMMIT_ID"
         echo "Received from build-and-push:"
         echo "  commit_id: ${{ needs.build-and-push.outputs.commit_id }}"
         echo "  steps_can_proceed: ${{ needs.build-and-push.outputs.steps_can_proceed }}"
