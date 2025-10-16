@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     env:
-      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id }}
+      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id || github.run_id }}
     steps:
     - name: Debug Received Outputs
       run: |
