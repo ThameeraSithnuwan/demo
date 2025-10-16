@@ -25,9 +25,8 @@ jobs:
     name: Build and Push
     runs-on: ubuntu-latest
     outputs:
-      commit_id: ${{ steps.checkout-commit.outputs.commit_id }}
       steps_can_proceed: ${{ env.STEPS_CAN_PROCEED }}
-    
+      commit_id: ${{ steps.checkout-commit.outputs.commit_id }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
