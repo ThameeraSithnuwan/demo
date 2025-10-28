@@ -34,9 +34,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     needs:
-      - build-and-push
       - _release-info
-    if: ${{ always() && needs._release-info.result == 'success' || needs._release-info.result == 'skipped' }}
+    if: ${{ always() && (needs._release-info.result == 'success' || needs._release-info.result == 'skipped') }}
     steps:
       - name: Check if _release-info ran
         run: |
