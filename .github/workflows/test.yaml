@@ -27,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Generate release info
-        run: echo "Generating release info..."
+        run: exit 1
     outputs:
       release_data: "some_value"
 
