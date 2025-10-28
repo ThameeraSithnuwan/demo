@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build and push container
-        run: exit 1
+        run: echo "hello"
         
 
   _release-info:
