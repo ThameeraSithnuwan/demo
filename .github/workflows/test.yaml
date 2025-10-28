@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Check if _release-info ran
         run: |
-          echo "${{ needs.releaseinfo.result }}"
+          echo "${{ needs._release-info.result }}"
           # safely check optional job
           RELEASE_DATA="${{ needs._release-info.outputs.release_data || '' }}"
           if [[ -n "$RELEASE_DATA" ]]; then
