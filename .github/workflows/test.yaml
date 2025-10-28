@@ -1,132 +1,49 @@
-name: Test Job Outputs with Tickets
+name: CI/CD Pipeline
 
 on:
   workflow_dispatch:
-    inputs:
-      tickets:
-        description: 'Comma separated tickets'
-        required: false
-        type: string
-      commitId:
-        description: 'Specific commit ID'
-        required: false
-        type: string
-      branchName:
-        description: 'Branch name'
-        required: false
-        type: string
   push:
-      branches: 
-        - main
-env:
-  COMMIT_ID: test
+    branches:
+      - main
+
 jobs:
+
   build-and-push:
     name: Build and Push
     runs-on: ubuntu-latest
-    outputs:
-      steps_can_proceed: ${{ env.STEPS_CAN_PROCEED }}
-      commit_id: ${{ steps.checkout-commit.outputs.commit_id }}
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Checkout Specific Commit (Simulate Ticket Merging)
-      id: checkout-commit
-      env:
-        TICKETS: test1,test2
-        COMMIT_ID: ${{ inputs.commitId }}
-        BRANCH_NAME: main
-      run: |
-        echo "Starting checkout process..."
-        echo "TICKETS: $TICKETS"
-        echo "COMMIT_ID: $COMMIT_ID"
-        echo "BRANCH_NAME: $BRANCH_NAME"
-        
-        git fetch --all
-        
-        # Simulate ticket merging scenario
-        if [ -n "$TICKETS" ]; then
-          echo "Tickets provided: $TICKETS"
-          
-          # Simulate merge operations
-          echo "Simulating merge operations for tickets..."
-          
-          # Get current commit after "merges"
-          MERGED_COMMIT_ID=$(git rev-parse HEAD)
-          echo "Merged Commit ID: $MERGED_COMMIT_ID"
-          
-          # Set outputs
-          echo "commit_id=$MERGED_COMMIT_ID" >> $GITHUB_OUTPUT
-          echo "COMMIT_ID=$MERGED_COMMIT_ID" >> $GITHUB_ENV
-          echo "STEPS_CAN_PROCEED=true" >> $GITHUB_ENV
-          
-        elif [ -n "$COMMIT_ID" ]; then
-          echo "Commit ID provided: $COMMIT_ID"
-          git checkout $COMMIT_ID || true
-          echo "commit_id=$COMMIT_ID" >> $GITHUB_OUTPUT
-          echo "STEPS_CAN_PROCEED=true" >> $GITHUB_ENV
-          
-        else
-          echo "No tickets or commit ID - using default"
-          DEFAULT_COMMIT_ID=$(git rev-parse HEAD)
-          echo "commit_id=$DEFAULT_COMMIT_ID" >> $GITHUB_OUTPUT
-          echo "STEPS_CAN_PROCEED=true" >> $GITHUB_ENV
-        fi
-    
-    - name: Debug Build Outputs
-      run: |
-        echo "=== Build Job Debug Info ==="
-        echo "Step checkout-commit outputs:"
-        echo "  commit_id: ${{ steps.checkout-commit.outputs.commit_id }}"
-        echo "Environment:"
-        echo "  COMMIT_ID: ${{ env.COMMIT_ID }}"
-        echo "  STEPS_CAN_PROCEED: ${{ env.STEPS_CAN_PROCEED }}"
-        echo "Job outputs that will be passed:"
-        echo "  commit_id: ${{ steps.checkout-commit.outputs.commit_id }}"
-        echo "  steps_can_proceed: ${{ env.STEPS_CAN_PROCEED }}"
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Build and push container
+        run: echo "Building and pushing..."
+    outputs:
+      build_output: some_value # optional outputs if needed
+
+  _release-info:
+    name: Release Info (Optional)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: ${{ github.event.client_payload.releaseData != null || true }} # run if there is release data, otherwise skip
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Generate release info
+        run: echo "Release info step..."
+    outputs:
+      release_data: some_value # optional outputs
 
   deploy:
     name: Deploy
-    env:
-      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id }}
     runs-on: ubuntu-latest
-    needs: build-and-push
+    needs: build-and-push # only require build-and-push
+    if: ${{ needs['build-and-push'].result == 'success' }}
     steps:
-    - name: Debug Received Outputs
-      run: |
-        echo $COMMIT_ID
-        echo "Received from build-and-push:"
-        echo "  commit_id: ${{ needs.build-and-push.outputs.commit_id }}"
-        echo "  steps_can_proceed: ${{ needs.build-and-push.outputs.steps_can_proceed }}"
-        
-        echo "Original inputs:"
-        echo "  tickets: ${{ inputs.tickets }}"
-        echo "  commitId: ${{ inputs.commitId }}"
-        echo "  branchName: ${{ inputs.branchName }}"
-        
-        echo "GitHub context:"
-        echo "  github.sha: ${{ github.sha }}"
-        
-        # Test different ways to set COMMIT_ID
-        echo "=== Testing COMMIT_ID assignment ==="
-        echo "Method 1 - Only from outputs: ${{ needs.build-and-push.outputs.commit_id }}"
-        echo "Method 2 - With fallback: ${{ needs.build-and-push.outputs.commit_id || inputs.commitId || github.sha }}"
+      - name: "Check if _release-info ran"
+        run: |
+          if [ -n "${{ needs._release-info }}" ]; then
+            echo "_release-info ran, can use outputs if needed"
+          else
+            echo "_release-info skipped, continuing anyway"
 
-  _status-failed-complex:
-    name: Status Failed (Complex Dependencies)
-    runs-on: ubuntu-latest
-    needs:
-      - build-and-push
-      - deploy
-    env:
-      COMMIT_ID: ${{ needs.build-and-push.outputs.commit_id }}
-    
-    steps:
-    - name: Debug Failed Complex Dependency
-      run: |
-        echo "=== Failed Job Complex Dependency ==="
-        echo "Received commit_id from build-and-push: '${{ needs.build-and-push.outputs.commit_id }}'"
-        echo "Environment COMMIT_ID: '${{ env.COMMIT_ID }}'"
+      - name: Deploy application
+        run: echo "Deploying app..."
