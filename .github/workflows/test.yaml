@@ -36,7 +36,7 @@ jobs:
     needs:
       - build-and-push
       - _release-info
-    if: ${{ needs.releaseinfo.result == 'success' || needs.releaseinfo.result == 'skipped' }}
+    if: ${{ needs._release-info.result == 'success' || needs._release-info.result == 'skipped' }}
     steps:
       - name: Check if _release-info ran
         run: |
