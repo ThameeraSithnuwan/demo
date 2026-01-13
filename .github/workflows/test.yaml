@@ -7,13 +7,34 @@ on:
       - main
 
 jobs:
-
   build-and-push:
     name: Build and Push
-    runs-on: codebuild-test-project-${{ github.run_id }}-${{ github.run_attempt }}
+    runs-on: codebuild-test-proj-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build and push container
         run: echo "hello"
-        
+      - name: Create artifact file
+        run: echo "This is a test artifact created at $(date)" > artifact.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: artifact.txt
+          retention-days: 1
+
+  process-artifact:
+    name: Process Artifact
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+          path: ./downloaded-artifacts
+      - name: Display artifact content
+        run: |
+          echo "Artifact content:"
+          cat ./downloaded-artifacts/artifact.txt
