@@ -1,13 +1,21 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
-const PORT = 3000;
+const PORT = 50252;
+
+app.use(cors());
+app.use((req, res, next) => {
+  res.header('X-Frame-Options', 'ALLOWALL');
+  next();
+});
 
 //sample comment
 app.use(express.json());
 
 // Example route
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+  res.send('hello earth');
+});
 
 // Start node server 
 app.listen(PORT, () => {
